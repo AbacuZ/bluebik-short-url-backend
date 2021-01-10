@@ -5,9 +5,9 @@
     
     
     <groupId>com.bluebik.shorturl</groupId>
-    <artifactId>bluebik-schorturl-api</artifactId>
+    <artifactId>bluebik-shorturl-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>bluebik-schorturl-api</name>
+    <name>bluebik-shorturl-api</name>
     <description>Generate short url project for Spring Boot</description>
     
     <parent>
