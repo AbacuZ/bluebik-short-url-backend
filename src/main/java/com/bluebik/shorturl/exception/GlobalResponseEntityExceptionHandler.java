@@ -13,8 +13,20 @@ import com.bluebik.shorturl.domain.ErrorResponse;
 public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity handleMenuNotFoundException(UserNotFoundException ex) {
+    public ResponseEntity handleUserNotFoundException(UserNotFoundException ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;
+
+        List<String> list = Arrays.asList(ex.getMessage());
+        ErrorResponse<List<String>> response = new ErrorResponse<>();
+        response.setMessage(list);
+        response.setStatus(status.getReasonPhrase());
+        response.setCode(status.value());
+        return new ResponseEntity(response, status);
+    }
+
+    @ExceptionHandler(URLValidException.class)
+    public ResponseEntity handleURLValidException(URLValidException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
         List<String> list = Arrays.asList(ex.getMessage());
         ErrorResponse<List<String>> response = new ErrorResponse<>();
