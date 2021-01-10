@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bluebik.shorturl.domain.User;
+import com.bluebik.shorturl.domain.UserReq;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -28,11 +29,11 @@ public class UserController {
     public ResponseEntity findAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/{id}")
     @ApiOperation(value = "Get user by id", notes = "")
     public ResponseEntity findUserById(
-            @ApiParam(value = "user id", required = true) 
+            @ApiParam(value = "user id", required = true)
             @PathVariable Integer id) {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
@@ -40,8 +41,17 @@ public class UserController {
     @PostMapping
     @ApiOperation(value = "Add user", notes = "")
     public ResponseEntity addUser(
-            @ApiParam(value = "A new user", required = true) 
+            @ApiParam(value = "A new user", required = true)
             @RequestBody User user) {
         return new ResponseEntity<>(userService.insert(user), HttpStatus.OK);
     }
+    
+    @PostMapping("/auth")
+    @ApiOperation(value = "Get username", notes = "")
+    public ResponseEntity auth(
+            @ApiParam(value = "user data", required = true)
+            @RequestBody UserReq user) {
+        return new ResponseEntity<>(userService.auth(user.getUsername(), user.getPassword()), HttpStatus.OK);
+    }
+
 }

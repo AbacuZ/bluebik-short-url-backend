@@ -44,4 +44,19 @@ public class UserService {
         HttpStatus status = HttpStatus.OK;
         return new SuccessResponse(status.getReasonPhrase(), status.value(), list, userResult);
     }
+    
+    public SuccessResponse auth(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException("User not found in database");
+        }
+        
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new UserNotFoundException("Password not match");
+        }
+        
+        List<String> list = Arrays.asList();
+        HttpStatus status = HttpStatus.OK;
+        return new SuccessResponse(status.getReasonPhrase(), status.value(), list, user);
+    }
 }

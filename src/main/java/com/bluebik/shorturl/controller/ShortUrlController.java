@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bluebik.shorturl.domain.ShortUrl;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/v1/rest/url")
@@ -20,6 +21,12 @@ public class ShortUrlController {
     
     @Autowired
     private ShortUrlService shorturlService;
+    
+    @GetMapping
+    @ApiOperation(value = "Get short url", notes = "")
+    public ResponseEntity findAll() {
+        return new ResponseEntity<>(shorturlService.findAll(), HttpStatus.OK);
+    }
     
     @PostMapping
     @ApiOperation(value = "Create short url", notes = "")

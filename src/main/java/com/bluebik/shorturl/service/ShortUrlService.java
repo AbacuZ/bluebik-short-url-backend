@@ -21,6 +21,13 @@ public class ShortUrlService {
     @Autowired
     private ShorturlRepository shorturlRepository;
     
+    public SuccessResponse findAll() {
+        List<ShortUrl> shortUrlResult = shorturlRepository.findAll();
+        List<String> list = Arrays.asList();
+        HttpStatus status = HttpStatus.OK;
+        return new SuccessResponse(status.getReasonPhrase(), status.value(), list, shortUrlResult);
+    }
+    
     public SuccessResponse createURL(ShortUrl url) {
         UrlValidator validator = new UrlValidator(new String[]{"http", "https"});
 
@@ -30,13 +37,19 @@ public class ShortUrlService {
         
         String id = Hashing.murmur3_32().hashString(url.getUrl(), Charset.defaultCharset()).toString();
         
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        ShortUrl shorturl = new ShortUrl();
-        shorturl.setId(id);
-        shorturl.setStaticClick(0);
-        shorturl.setUrl(url.getUrl());
-        shorturl.setCreatedDatetime(timestamp);
-        ShortUrl shorturlResult = shorturlRepository.save(shorturl);
+        ShortUrl shorturlResult;
+        ShortUrl shortUrlFound = shorturlRepository.findById(id).get();
+        if (shortUrlFound == null) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            ShortUrl shorturl = new ShortUrl();
+            shorturl.setId(id);
+            shorturl.setStaticClick(0);
+            shorturl.setUrl(url.getUrl());
+            shorturl.setCreatedDatetime(timestamp);
+            shorturlResult = shorturlRepository.save(shorturl);
+        } else {
+            shorturlResult = shortUrlFound;
+        }
         
         List<String> list = Arrays.asList();
         HttpStatus status = HttpStatus.OK;
