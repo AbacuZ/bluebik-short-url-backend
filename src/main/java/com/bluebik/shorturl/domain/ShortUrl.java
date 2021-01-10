@@ -33,6 +33,6 @@ public class ShortUrl implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7:00")
-    private Date createDatetime;
+    private Date createdDatetime;
     
 }

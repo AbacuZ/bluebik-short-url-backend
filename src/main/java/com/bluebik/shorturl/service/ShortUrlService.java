@@ -8,6 +8,7 @@ import com.bluebik.shorturl.exception.URLNotFoundException;
 import com.bluebik.shorturl.exception.URLValidException;
 import com.google.common.hash.Hashing;
 import java.nio.charset.Charset;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -28,10 +29,13 @@ public class ShortUrlService {
         }
         
         String id = Hashing.murmur3_32().hashString(url.getUrl(), Charset.defaultCharset()).toString();
+        
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         ShortUrl shorturl = new ShortUrl();
         shorturl.setId(id);
         shorturl.setStaticClick(0);
         shorturl.setUrl(url.getUrl());
+        shorturl.setCreatedDatetime(timestamp);
         ShortUrl shorturlResult = shorturlRepository.save(shorturl);
         
         List<String> list = Arrays.asList();
