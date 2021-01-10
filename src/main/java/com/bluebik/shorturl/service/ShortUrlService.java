@@ -4,6 +4,7 @@ import com.bluebik.shorturl.dao.jpa.ShorturlRepository;
 import org.springframework.stereotype.Service;
 import com.bluebik.shorturl.domain.SuccessResponse;
 import com.bluebik.shorturl.domain.ShortUrl;
+import com.bluebik.shorturl.exception.URLNotFoundException;
 import com.bluebik.shorturl.exception.URLValidException;
 import com.google.common.hash.Hashing;
 import java.nio.charset.Charset;
@@ -36,5 +37,19 @@ public class ShortUrlService {
         List<String> list = Arrays.asList();
         HttpStatus status = HttpStatus.OK;
         return new SuccessResponse(status.getReasonPhrase(), status.value(), list, shorturlResult);
+    }
+    
+    public String getURL(String id) {
+        ShortUrl shortUrl = shorturlRepository.findById(id).get();
+        
+        if (shortUrl == null) {
+            throw new URLNotFoundException("URL Not Found");
+        }
+        
+        return shortUrl.getUrl();
+    }
+    
+    public void updateStaticClick(String id) {
+        shorturlRepository.updateClick(id);
     }
 }
